@@ -15,12 +15,12 @@ app.use(express.json());
 
 
 
-app.get('/message', (req, res) => {
+app.get('/api/message', (req, res) => {
     // console.log(req.body);
     res.send(`hello`);
 });
 
-app.get('/qualities/:id?', async (req, res) => {
+app.get('/api/qualities/:id?', async (req, res) => {
 
     try {
 
@@ -68,7 +68,7 @@ app.get('/qualities/:id?', async (req, res) => {
 
 
 
-app.get('/downloadVideo/:id?/:itag?', async (req, res) => {
+app.get('/api/downloadVideo/:id?/:itag?', async (req, res) => {
 
     try {
         
@@ -111,7 +111,7 @@ app.get('/downloadVideo/:id?/:itag?', async (req, res) => {
 
 
 
-app.get('/downloadAudio/:id?', async (req, res) => {
+app.get('/api/downloadAudio/:id?', async (req, res) => {
 
     try {
         var videoID = req.params.id;

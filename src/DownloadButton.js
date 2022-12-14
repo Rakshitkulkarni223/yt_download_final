@@ -33,7 +33,7 @@ function DownloadButton(props) {
 
         props.type === "mp4" ?
 
-            await axios.get(`/downloadVideo/${props.id}/${itag}`)
+            await axios.get(`/api/downloadVideo/${props.id}/${itag}`)
                 .then((response) => {
                     // console.log(response.data);
                     alert(response.data);
@@ -43,7 +43,7 @@ function DownloadButton(props) {
                     setVideoText(<h5>{err}</h5>);
                 })
             :
-            await fetch(`/downloadAudio/${props.id}`, {
+            await fetch(`/api/downloadAudio/${props.id}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -71,7 +71,7 @@ function DownloadButton(props) {
 
         const response = async () => {
 
-            await fetch(`/qualities/${props.id}`, {
+            await fetch(`/api/qualities/${props.id}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
