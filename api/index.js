@@ -119,7 +119,7 @@ app.get('/api/downloadAudio/:id?', async (req, res) => {
         var videoURL = `https://www.youtube.com/watch?v=${videoID}`;
 
 
-        console.log(videoURL);
+        // console.log(videoURL);
 
         let info = await ytdl.getInfo(videoID);
 
