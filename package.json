@@ -9,6 +9,7 @@
     "axios": "^1.2.1",
     "express": "^4.18.2",
     "firebase": "^9.15.0",
+    "gh-pages": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.5",
@@ -17,6 +18,8 @@
     "ytdl-core": "^4.11.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -40,5 +43,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8081"
+  "proxy": "http://localhost:8081",
+  "homepage": "https://Rakshitkulkarni223.github.io/yt_download_final"
 }
