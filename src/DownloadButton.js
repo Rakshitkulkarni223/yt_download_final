@@ -10,16 +10,6 @@ function DownloadButton(props) {
 
     const [ids, setIds] = useState([]);
 
-    // const config = {
-    //     onDownloadProgress: progressEvent => {
-    //         const total = parseFloat(progressEvent.currentTarget.responseHeaders['Content-Length'])
-    //         const current = progressEvent.currentTarget.response.length
-        
-    //         let percentCompleted = Math.floor(current / total * 100)
-    //         console.log('completed: ', percentCompleted)
-    //       }
-    // }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -34,30 +24,31 @@ function DownloadButton(props) {
             itag = itag.trim();
         }
 
+        if(!qualityanditag)
+        {
+            itag = 'highest';
+        }
+
+
+
         props.type === "mp4" ?
 
-        await axios.post('/api/downloadVideo', {
-                url: props.url,
-                id: props.id,
-                type: props.type,
-                itag: itag,
-                quality: quality
-            }
-            ).then((response) => {
-                // console.log(response.data);
-                alert(response.data);
-                setVideoText(<h5>{response.data}</h5>);
-            }).catch(err => {
-                // console.log(err);
-                setVideoText(<h5>{err}</h5>);
-            })
+            await axios.get(`/downloadVideo/${props.id}/${itag}`)
+                .then((response) => {
+                    // console.log(response.data);
+                    alert(response.data);
+                    setVideoText(<h5>{response.data}</h5>);
+                }).catch(err => {
+                    // console.log(err);
+                    setVideoText(<h5>{err}</h5>);
+                })
             :
-            await fetch('/api/downloadAudio', {
-                method: 'POST',
+            await fetch(`/downloadAudio/${props.id}`, {
+                method: 'GET',
                 headers: {
+                    Accept: 'application/json',
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ url: props.url, id: props.id, type: props.type }),
+                }
             }).then(function (response) {
                 return response.text();
             }).then(function (data) {
@@ -80,12 +71,12 @@ function DownloadButton(props) {
 
         const response = async () => {
 
-            await fetch('/api/qualities', {
-                method: 'POST',
+            await fetch(`/qualities/${props.id}`, {
+                method: 'GET',
                 headers: {
+                    Accept: 'application/json',
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ url: props.url, id: props.id, type: "mp4" }),
+                }
             }).then(
                 response => response.json()
             ).then(

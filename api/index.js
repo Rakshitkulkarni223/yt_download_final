@@ -15,63 +15,70 @@ app.use(express.json());
 
 
 
-app.get('/api/message', (req, res) => {
+app.get('/message', (req, res) => {
     // console.log(req.body);
     res.send(`hello`);
 });
 
-app.post('/api/qualities', async (req, res) => {
+app.get('/qualities/:id?', async (req, res) => {
 
     try {
-        var videoURL = req.body.url;
 
-        var videoID = req.body.id;
+        // console.log(req.params.id);
+    
 
-        var videoType = req.body.type;
+        // res.send(`Hello ${req.params.id}`)
+        // var videoURL = req.body.url;
+
+        var videoID = req.params.id;
+
+        // var videoType = req.body.type;
 
         let info = await ytdl.getInfo(videoID);
 
+        // console.log(info);
 
-        if (videoType == "mp3") {
-            // console.log("Music");
-            let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
-            // console.log(audioFormats);
-            // fs.writeFile('myjsonfile.json', JSON.stringify(audioFormats), 'utf8', () => {
-            //     // console.log("Done");
-            // });
-            res.send(audioFormats)
-        }
-        if (videoType == "mp4") {
-            // console.log("Music+Video");
+
+        // if (videoType == "mp3") {
+        //     // console.log("Music");
+        //     let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
+        //     // console.log(audioFormats);
+        //     // fs.writeFile('myjsonfile.json', JSON.stringify(audioFormats), 'utf8', () => {
+        //     //     // console.log("Done");
+        //     // });
+        //     res.send(audioFormats)
+        // }
+        // if (videoType == "mp4") {
+        //     // console.log("Music+Video");
             let videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
-            // console.log(videoFormats);
-            // fs.writeFile('myjsonfile.json', JSON.stringify(videoFormats), 'utf8', () => {
-            //     // console.log("Done");
-            // });
+        //     // console.log(videoFormats);
+        //     // fs.writeFile('myjsonfile.json', JSON.stringify(videoFormats), 'utf8', () => {
+        //     //     // console.log("Done");
+        //     // });
 
-            // console.log(videoFormats);
+        //     // console.log(videoFormats);
             res.send(videoFormats);
-        }
+        // }
     }
     catch (e) {
+        // console.log(e);
         res.send(e);
     }
 });
 
 
 
-app.post('/api//downloadVideo', async (req, res) => {
+app.get('/downloadVideo/:id?/:itag?', async (req, res) => {
 
     try {
-        var videoURL = req.body.url;
+        
+        var videoID = req.params.id;
 
-        var videoID = req.body.id;
+        var videoURL = `https://www.youtube.com/watch?v=${videoID}`;
 
-        var videoType = req.body.type;
+        var Itag = req.params.itag;
 
-        var videoQuality = req.body.quality;
-
-        var Itag = req.body.itag;
+        // console.log(Itag);
 
 
         let info = await ytdl.getInfo(videoID);
@@ -82,7 +89,7 @@ app.post('/api//downloadVideo', async (req, res) => {
 
         // console.log("Music+Video");
 
-        ytdl(videoURL, { quality: Itag }).on('progress', (_, totalDownloaded, total) => {
+        ytdl(videoURL, { filter : 'videoandaudio', quality: Itag }).on('progress', (_, totalDownloaded, total) => {
             // console.log('totalDownloaded: ' + totalDownloaded);
         }).on('end', (err, info) => {
             if (err) {
@@ -91,11 +98,12 @@ app.post('/api//downloadVideo', async (req, res) => {
             }
             // console.log('Video Download Completed!!');
             res.send('Video Download Completed!!');
-        }).pipe(fs.createWriteStream(`${videoTitle} ${videoQuality}.mp4`));
+        }).pipe(
+            fs.createWriteStream(`${videoTitle} ${Itag}.mp4`))
 
     }
     catch (e) {
-        // console.log('Video Download Error!');
+        // console.log(e);
         res.send('Video Download Error!');
     }
 });
@@ -103,18 +111,19 @@ app.post('/api//downloadVideo', async (req, res) => {
 
 
 
-app.post('/api//downloadAudio', async (req, res) => {
+app.get('/downloadAudio/:id?', async (req, res) => {
 
     try {
-        var videoURL = req.body.url;
+        var videoID = req.params.id;
 
-        var videoID = req.body.id;
+        var videoURL = `https://www.youtube.com/watch?v=${videoID}`;
 
-        var videoType = req.body.type;
+
+        console.log(videoURL);
 
         let info = await ytdl.getInfo(videoID);
 
-        var videoTitle = info["videoDetails"]["title"];
+        var AudioTitle = info["videoDetails"]["title"];
         // var desc = info["videoDetails"]["description"];
         // var length = info["videoDetails"]["lengthSeconds"];
 
@@ -130,7 +139,7 @@ app.post('/api//downloadAudio', async (req, res) => {
             }
             // console.log('Audio Download Completed!!');
             res.send('Audio Download Completed!!');
-        }).pipe(fs.createWriteStream(`${videoTitle}.mp3`));
+        }).pipe(fs.createWriteStream(`${AudioTitle}.mp3`));
     }
     catch (e) {
         // console.log('Audio Download Completed!!');
