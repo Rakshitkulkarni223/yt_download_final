@@ -36,7 +36,7 @@ function DownloadButton(props) {
 
         props.type === "mp4" ?
 
-        await axios.post('/downloadVideo', {
+        await axios.post('/api/downloadVideo', {
                 url: props.url,
                 id: props.id,
                 type: props.type,
@@ -52,7 +52,7 @@ function DownloadButton(props) {
                 setVideoText(<h5>{err}</h5>);
             })
             :
-            await fetch('/downloadAudio', {
+            await fetch('/api/downloadAudio', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ function DownloadButton(props) {
 
         const response = async () => {
 
-            await fetch('/qualities', {
+            await fetch('/api/qualities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

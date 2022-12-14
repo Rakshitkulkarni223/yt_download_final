@@ -15,12 +15,12 @@ app.use(express.json());
 
 
 
-app.get('/message', (req, res) => {
+app.get('/api/message', (req, res) => {
     // console.log(req.body);
     res.send(`hello`);
 });
 
-app.post('/qualities', async (req, res) => {
+app.post('/api/qualities', async (req, res) => {
 
     try {
         var videoURL = req.body.url;
@@ -60,7 +60,7 @@ app.post('/qualities', async (req, res) => {
 
 
 
-app.post('/downloadVideo', async (req, res) => {
+app.post('/api//downloadVideo', async (req, res) => {
 
     try {
         var videoURL = req.body.url;
@@ -103,7 +103,7 @@ app.post('/downloadVideo', async (req, res) => {
 
 
 
-app.post('/downloadAudio', async (req, res) => {
+app.post('/api//downloadAudio', async (req, res) => {
 
     try {
         var videoURL = req.body.url;
